@@ -195,7 +195,7 @@ export const translations: Record<Language, Translations> = {
       commanderDesc: '60 stardates - Normal',
       captainDesc: '30 stardates - Hard',
       prompt: 'Your rank?',
-      options: '1 - LIEUTENANT (90 stardates - Easy)\n2 - COMMANDER (60 stardates - Normal)\n3 - CAPTAIN (30 stardates - Hard)',
+      options: '1 - LIEUTENANT\n2 - COMMANDER\n3 - CAPTAIN',
       selected: (level, days) => `Difficulty selected: ${level} (${days} stardates)`,
     },
     
@@ -358,7 +358,7 @@ export const translations: Record<Language, Translations> = {
       commanderDesc: '60 звездных дат - Нормально',
       captainDesc: '30 звездных дат - Сложно',
       prompt: 'Ваше звание?',
-      options: '1 - ЛЕЙТЕНАНТ (90 звездных дат - Легко)\n2 - КОММАНДЕР (60 звездных дат - Нормально)\n3 - КАПИТАН (30 звездных дат - Сложно)',
+      options: '1 - ЛЕЙТЕНАНТ\n2 - КОММАНДЕР\n3 - КАПИТАН',
       selected: (level, days) => `Выбрана сложность: ${level} (${days} звездных дат)`,
     },
     
