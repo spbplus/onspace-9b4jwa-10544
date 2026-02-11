@@ -6,6 +6,17 @@ export interface Translations {
   missionBrief: (klingons: number, time: number) => string;
   typeHelpForHelp: string;
   
+  // Difficulty levels
+  difficulty: {
+    title: string;
+    lieutenant: string;
+    commander: string;
+    captain: string;
+    lieutenantDesc: string;
+    commanderDesc: string;
+    captainDesc: string;
+  };
+  
   // Commands
   commands: {
     nav: string;
@@ -172,6 +183,16 @@ export const translations: Record<Language, Translations> = {
     missionBrief: (klingons, time) => `Your mission: Destroy ${klingons} Klingon warships in ${time} stardates.`,
     typeHelpForHelp: 'Type HEL for help.',
     
+    difficulty: {
+      title: 'Select Difficulty',
+      lieutenant: 'Lieutenant',
+      commander: 'Commander',
+      captain: 'Captain',
+      lieutenantDesc: '90 stardates - Easy',
+      commanderDesc: '60 stardates - Normal',
+      captainDesc: '30 stardates - Hard',
+    },
+    
     commands: {
       nav: 'NAV',
       srs: 'SRS',
@@ -321,6 +342,16 @@ export const translations: Record<Language, Translations> = {
     gameTitle: 'СУПЕР ЗВЕЗДНЫЙ ПУТЬ',
     missionBrief: (klingons, time) => `Ваша миссия: Уничтожить ${klingons} клингонских крейсеров за ${time} звездных дат.`,
     typeHelpForHelp: 'Введите HEL для справки.',
+    
+    difficulty: {
+      title: 'Выберите сложность',
+      lieutenant: 'Лейтенант',
+      commander: 'Коммандер',
+      captain: 'Капитан',
+      lieutenantDesc: '90 звездных дат - Легко',
+      commanderDesc: '60 звездных дат - Нормально',
+      captainDesc: '30 звездных дат - Сложно',
+    },
     
     commands: {
       nav: 'NAV',

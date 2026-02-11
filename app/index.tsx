@@ -8,6 +8,7 @@ import { Terminal } from '@/components/ui/Terminal';
 import { CommandInput } from '@/components/ui/CommandInput';
 import { GameHeader } from '@/components/ui/GameHeader';
 import { generateHelp } from '@/services/displayEngine';
+import { DifficultyLevel } from '@/services/gameEngine';
 
 export default function GameScreen() {
   const insets = useSafeAreaInsets();
@@ -16,17 +17,45 @@ export default function GameScreen() {
 
   const handleNewGame = () => {
     Alert.alert(
-      'New Game',
-      'Start a new mission? Current progress will be lost.',
+      t.difficulty.title,
+      '',
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t.commands.xxx, style: 'cancel' },
         {
-          text: 'New Game',
-          style: 'destructive',
-          onPress: startNewGame,
+          text: `${t.difficulty.lieutenant} (${t.difficulty.lieutenantDesc})`,
+          onPress: () => confirmNewGame('lieutenant'),
+        },
+        {
+          text: `${t.difficulty.commander} (${t.difficulty.commanderDesc})`,
+          onPress: () => confirmNewGame('commander'),
+        },
+        {
+          text: `${t.difficulty.captain} (${t.difficulty.captainDesc})`,
+          onPress: () => confirmNewGame('captain'),
         },
       ]
     );
+  };
+
+  const confirmNewGame = (difficulty: DifficultyLevel) => {
+    if (gameState && !gameState.destroyed && !gameState.won) {
+      Alert.alert(
+        'New Game',
+        language === 'en' 
+          ? 'Start a new mission? Current progress will be lost.'
+          : 'Начать новую миссию? Текущий прогресс будет потерян.',
+        [
+          { text: language === 'en' ? 'Cancel' : 'Отмена', style: 'cancel' },
+          {
+            text: language === 'en' ? 'New Game' : 'Новая игра',
+            style: 'destructive',
+            onPress: () => startNewGame(difficulty),
+          },
+        ]
+      );
+    } else {
+      startNewGame(difficulty);
+    }
   };
 
   const handleHelp = () => {

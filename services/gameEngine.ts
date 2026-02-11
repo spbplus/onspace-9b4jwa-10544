@@ -14,9 +14,16 @@ const QUADRANT_SIZE = 8;
 const INITIAL_ENERGY = 3000;
 const INITIAL_TORPEDOES = 10;
 const INITIAL_SHIELDS = 0;
-const TIME_LIMIT = 30;
 
-export function createNewGame(): GameState {
+export type DifficultyLevel = 'lieutenant' | 'commander' | 'captain';
+
+const DIFFICULTY_TIME: Record<DifficultyLevel, number> = {
+  lieutenant: 90,
+  commander: 60,
+  captain: 30,
+};
+
+export function createNewGame(difficulty: DifficultyLevel = 'captain'): GameState {
   const galaxy = initializeGalaxy();
   const initialKlingons = countTotalKlingons(galaxy);
   const ship = createShip(galaxy);
@@ -28,7 +35,7 @@ export function createNewGame(): GameState {
     initialKlingons,
     stardate: 2000 + Math.floor(Math.random() * 100),
     initialStardate: 2000,
-    timeRemaining: TIME_LIMIT,
+    timeRemaining: DIFFICULTY_TIME[difficulty],
     destroyed: false,
     won: false,
     currentKlingons: [],

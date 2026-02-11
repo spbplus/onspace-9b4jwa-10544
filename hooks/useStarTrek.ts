@@ -7,6 +7,7 @@ import {
   populateQuadrant,
   updateShipCondition,
   repairSystems,
+  DifficultyLevel,
 } from '@/services/gameEngine';
 import { firePhasers, fireTorpedo, klingonAttack } from '@/services/combatEngine';
 import { moveShip, dockAtStarbase } from '@/services/navigationEngine';
@@ -38,8 +39,8 @@ export function useStarTrek() {
     setLogs(prev => [...prev, ...newLogs]);
   }, []);
 
-  const startNewGame = useCallback(() => {
-    const state = createNewGame();
+  const startNewGame = useCallback((difficulty: DifficultyLevel = 'captain') => {
+    const state = createNewGame(difficulty);
     populateQuadrant(state);
     setGameState(state);
     setLogs([]);
