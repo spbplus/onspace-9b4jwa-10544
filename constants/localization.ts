@@ -15,6 +15,9 @@ export interface Translations {
     lieutenantDesc: string;
     commanderDesc: string;
     captainDesc: string;
+    prompt: string;
+    options: string;
+    selected: (level: string, days: number) => string;
   };
   
   // Commands
@@ -191,6 +194,9 @@ export const translations: Record<Language, Translations> = {
       lieutenantDesc: '90 stardates - Easy',
       commanderDesc: '60 stardates - Normal',
       captainDesc: '30 stardates - Hard',
+      prompt: 'Select difficulty level:',
+      options: '1 - LIEUTENANT (90 stardates - Easy)\n2 - COMMANDER (60 stardates - Normal)\n3 - CAPTAIN (30 stardates - Hard)',
+      selected: (level, days) => `Difficulty selected: ${level} (${days} stardates)`,
     },
     
     commands: {
@@ -351,6 +357,9 @@ export const translations: Record<Language, Translations> = {
       lieutenantDesc: '90 звездных дат - Легко',
       commanderDesc: '60 звездных дат - Нормально',
       captainDesc: '30 звездных дат - Сложно',
+      prompt: 'Выберите уровень сложности:',
+      options: '1 - ЛЕЙТЕНАНТ (90 звездных дат - Легко)\n2 - КОММАНДЕР (60 звездных дат - Нормально)\n3 - КАПИТАН (30 звездных дат - Сложно)',
+      selected: (level, days) => `Выбрана сложность: ${level} (${days} звездных дат)`,
     },
     
     commands: {

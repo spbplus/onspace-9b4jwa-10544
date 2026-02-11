@@ -25,6 +25,7 @@ export function useStarTrek() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [awaitingDifficulty, setAwaitingDifficulty] = useState(false);
 
   const addLog = useCallback((text: string, type: LogEntry['type'] = 'normal') => {
     setLogs(prev => [...prev, { text, type, timestamp: Date.now() }]);
@@ -39,18 +40,38 @@ export function useStarTrek() {
     setLogs(prev => [...prev, ...newLogs]);
   }, []);
 
+  const promptDifficultySelection = useCallback(() => {
+    setLogs([]);
+    setCommandHistory([]);
+    setAwaitingDifficulty(true);
+    
+    addLog('======================================', 'info');
+    addLog(`    ${t.gameTitle}`, 'info');
+    addLog('======================================', 'info');
+    addLog('', 'normal');
+    addLog(t.difficulty.prompt, 'info');
+    addLog('', 'normal');
+    addLog(t.difficulty.options, 'normal');
+    addLog('', 'normal');
+  }, [addLog, t]);
+
   const startNewGame = useCallback((difficulty: DifficultyLevel = 'captain') => {
     const state = createNewGame(difficulty);
     populateQuadrant(state);
     setGameState(state);
-    setLogs([]);
-    setCommandHistory([]);
+    setAwaitingDifficulty(false);
     
     // Clear saved game
     AsyncStorage.removeItem('game_state').catch(error => {
       console.error('Failed to clear saved game:', error);
     });
     
+    const days = difficulty === 'lieutenant' ? 90 : difficulty === 'commander' ? 60 : 30;
+    const levelName = difficulty === 'lieutenant' ? t.difficulty.lieutenant : 
+                      difficulty === 'commander' ? t.difficulty.commander : t.difficulty.captain;
+    
+    addLog(t.difficulty.selected(levelName, days), 'success');
+    addLog('', 'normal');
     addLog('======================================', 'info');
     addLog(`    ${t.gameTitle} - ${t.status.stardate.toUpperCase()} ` + state.stardate.toFixed(1), 'info');
     addLog('======================================', 'info');
@@ -62,9 +83,33 @@ export function useStarTrek() {
     
     const scanLines = generateShortRangeScan(state, t);
     addLogs(scanLines, 'normal');
-  }, [addLog, addLogs]);
+  }, [addLog, addLogs, t]);
 
   const processCommand = useCallback((input: string) => {
+    // Handle difficulty selection
+    if (awaitingDifficulty) {
+      const trimmed = input.trim().toUpperCase();
+      addLog('> ' + input, 'info');
+      
+      let difficulty: DifficultyLevel | null = null;
+      
+      if (trimmed === '1' || trimmed === 'LIEUTENANT' || trimmed === 'ЛЕЙТЕНАНТ') {
+        difficulty = 'lieutenant';
+      } else if (trimmed === '2' || trimmed === 'COMMANDER' || trimmed === 'КОММАНДЕР') {
+        difficulty = 'commander';
+      } else if (trimmed === '3' || trimmed === 'CAPTAIN' || trimmed === 'КАПИТАН') {
+        difficulty = 'captain';
+      } else {
+        addLog(t.messages.unknownCommand, 'error');
+        addLog('', 'normal');
+        addLog(t.difficulty.options, 'normal');
+        return;
+      }
+      
+      startNewGame(difficulty);
+      return;
+    }
+    
     if (!gameState) {
       addLog(t.messages.noGameInProgress, 'error');
       return;
@@ -232,7 +277,7 @@ export function useStarTrek() {
       addLog('Error processing command.', 'error');
       console.error(error);
     }
-  }, [gameState, addLog, addLogs, t, logs]);
+  }, [gameState, addLog, addLogs, t, logs, awaitingDifficulty, startNewGame]);
 
   const saveGameState = useCallback((state: GameState, currentLogs: LogEntry[]) => {
     const saveData = {
@@ -267,17 +312,17 @@ export function useStarTrek() {
     const initGame = async () => {
       const loaded = await loadGameState();
       if (!loaded) {
-        startNewGame();
+        promptDifficultySelection();
       }
     };
     initGame();
-  }, [loadGameState, startNewGame]);
+  }, [loadGameState, promptDifficultySelection]);
 
   return {
     gameState,
     logs,
     commandHistory,
     processCommand,
-    startNewGame,
+    promptDifficultySelection,
   };
 }

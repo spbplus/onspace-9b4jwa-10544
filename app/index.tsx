@@ -8,36 +8,13 @@ import { Terminal } from '@/components/ui/Terminal';
 import { CommandInput } from '@/components/ui/CommandInput';
 import { GameHeader } from '@/components/ui/GameHeader';
 import { generateHelp } from '@/services/displayEngine';
-import { DifficultyLevel } from '@/services/gameEngine';
 
 export default function GameScreen() {
   const insets = useSafeAreaInsets();
   const { language, setLanguage, t } = useLocalization();
-  const { gameState, logs, processCommand, startNewGame } = useStarTrek();
+  const { gameState, logs, processCommand, promptDifficultySelection } = useStarTrek();
 
   const handleNewGame = () => {
-    Alert.alert(
-      t.difficulty.title,
-      '',
-      [
-        { text: t.commands.xxx, style: 'cancel' },
-        {
-          text: `${t.difficulty.lieutenant} (${t.difficulty.lieutenantDesc})`,
-          onPress: () => confirmNewGame('lieutenant'),
-        },
-        {
-          text: `${t.difficulty.commander} (${t.difficulty.commanderDesc})`,
-          onPress: () => confirmNewGame('commander'),
-        },
-        {
-          text: `${t.difficulty.captain} (${t.difficulty.captainDesc})`,
-          onPress: () => confirmNewGame('captain'),
-        },
-      ]
-    );
-  };
-
-  const confirmNewGame = (difficulty: DifficultyLevel) => {
     if (gameState && !gameState.destroyed && !gameState.won) {
       Alert.alert(
         'New Game',
@@ -49,12 +26,12 @@ export default function GameScreen() {
           {
             text: language === 'en' ? 'New Game' : 'Новая игра',
             style: 'destructive',
-            onPress: () => startNewGame(difficulty),
+            onPress: () => promptDifficultySelection(),
           },
         ]
       );
     } else {
-      startNewGame(difficulty);
+      promptDifficultySelection();
     }
   };
 
