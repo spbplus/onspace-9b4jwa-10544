@@ -66,12 +66,7 @@ export function useStarTrek() {
       console.error('Failed to clear saved game:', error);
     });
     
-    const days = difficulty === 'lieutenant' ? 90 : difficulty === 'commander' ? 60 : 30;
-    const levelName = difficulty === 'lieutenant' ? t.difficulty.lieutenant : 
-                      difficulty === 'commander' ? t.difficulty.commander : t.difficulty.captain;
-    
-    addLog(t.difficulty.selected(levelName, days), 'success');
-    addLog('', 'normal');
+
     addLog('======================================', 'info');
     addLog(`    ${t.gameTitle} - ${t.status.stardate.toUpperCase()} ` + state.stardate.toFixed(1), 'info');
     addLog('======================================', 'info');
