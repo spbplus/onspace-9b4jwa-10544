@@ -74,7 +74,6 @@ export function useStarTrek() {
     addLog(t.missionBrief(state.klingonsRemaining, state.timeRemaining), 'info');
     addLog('', 'normal');
     addLog(t.typeHelpForHelp, 'normal');
-    addLog('', 'normal');
     
     const scanLines = generateShortRangeScan(state, t);
     addLogs(scanLines, 'normal');
@@ -249,12 +248,11 @@ export function useStarTrek() {
         addLog('', 'success');
         addLog(t.messages.missionAccomplished, 'success');
         addLog(t.messages.congratulations, 'success');
-        addLog(t.messages.timeUsed(newState.initialStardate + 30 - newState.timeRemaining), 'success');
+        addLog(t.messages.timeUsed(newState.initialTimeRemaining - newState.timeRemaining), 'success');
       }
 
       // Auto show short range scan after movement (BEFORE Klingon attack)
       if (autoShowSRS && !newState.destroyed && !newState.won) {
-        addLog('');
         addLogs(generateShortRangeScan(newState, t));
       }
 

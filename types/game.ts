@@ -67,6 +67,7 @@ export interface GameState {
   stardate: number;
   initialStardate: number;
   timeRemaining: number;
+  initialTimeRemaining: number;
   destroyed: boolean;
   won: boolean;
   currentKlingons: Klingon[];

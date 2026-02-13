@@ -27,6 +27,7 @@ export function createNewGame(difficulty: DifficultyLevel = 'captain'): GameStat
   const galaxy = initializeGalaxy();
   const initialKlingons = countTotalKlingons(galaxy);
   const ship = createShip(galaxy);
+  const timeLimit = DIFFICULTY_TIME[difficulty];
   
   return {
     ship,
@@ -35,7 +36,8 @@ export function createNewGame(difficulty: DifficultyLevel = 'captain'): GameStat
     initialKlingons,
     stardate: 2000 + Math.floor(Math.random() * 100),
     initialStardate: 2000,
-    timeRemaining: DIFFICULTY_TIME[difficulty],
+    timeRemaining: timeLimit,
+    initialTimeRemaining: timeLimit,
     destroyed: false,
     won: false,
     currentKlingons: [],
