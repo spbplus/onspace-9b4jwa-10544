@@ -231,6 +231,12 @@ export function useStarTrek() {
           addLog(t.messages.unknownCommand, 'error');
       }
 
+      // Klingon counterattack
+      if (needsKlingonAttack && newState.currentKlingons.length > 0) {
+        const attackResult = klingonAttack(newState, t);
+        addLogs(attackResult.messages, attackResult.shipHit ? 'warning' : 'normal');
+      }
+
       // Auto repair while docked
       if (newState.ship.condition === 'DOCKED') {
         repairSystems(newState, 0.5);
@@ -252,17 +258,10 @@ export function useStarTrek() {
         addLog(t.messages.timeUsed(newState.initialStardate + 30 - newState.timeRemaining), 'success');
       }
 
-      // Auto show short range scan after movement (BEFORE Klingon attack)
+      // Auto show short range scan after movement
       if (autoShowSRS && !newState.destroyed && !newState.won) {
         addLog('');
         addLogs(generateShortRangeScan(newState, t));
-      }
-
-      // Klingon counterattack (AFTER showing map, in RED)
-      if (needsKlingonAttack && newState.currentKlingons.length > 0) {
-        const attackResult = klingonAttack(newState, t);
-        addLog('', 'error');
-        addLogs(attackResult.messages, 'error');
       }
 
       setGameState(newState);
