@@ -26,6 +26,7 @@ export function useStarTrek() {
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [awaitingDifficulty, setAwaitingDifficulty] = useState(false);
+  const [awaitingNewGameConfirmation, setAwaitingNewGameConfirmation] = useState(false);
 
   const addLog = useCallback((text: string, type: LogEntry['type'] = 'normal') => {
     setLogs(prev => [...prev, { text, type, timestamp: Date.now() }]);
@@ -80,6 +81,27 @@ export function useStarTrek() {
   }, [addLog, addLogs, t]);
 
   const processCommand = useCallback((input: string) => {
+    // Handle new game confirmation
+    if (awaitingNewGameConfirmation) {
+      const trimmed = input.trim().toUpperCase();
+      addLog('> ' + input, 'info');
+      
+      if (trimmed === 'Y' || trimmed === 'YES' || trimmed === 'Д' || trimmed === 'ДА') {
+        addLog(t.messages.newGameYes, 'success');
+        addLog('', 'normal');
+        setAwaitingNewGameConfirmation(false);
+        promptDifficultySelection();
+        return;
+      } else if (trimmed === 'N' || trimmed === 'NO' || trimmed === 'Н' || trimmed === 'НЕТ') {
+        addLog(t.messages.newGameNo, 'info');
+        setAwaitingNewGameConfirmation(false);
+        return;
+      } else {
+        addLog(t.messages.invalidYesNo, 'error');
+        return;
+      }
+    }
+    
     // Handle difficulty selection
     if (awaitingDifficulty) {
       const trimmed = input.trim().toUpperCase();
@@ -249,6 +271,16 @@ export function useStarTrek() {
         addLog(t.messages.missionAccomplished, 'success');
         addLog(t.messages.congratulations, 'success');
         addLog(t.messages.timeUsed(newState.initialTimeRemaining - newState.timeRemaining), 'success');
+        addLog('', 'normal');
+        addLog(t.messages.newGamePrompt, 'info');
+        setAwaitingNewGameConfirmation(true);
+      }
+      
+      // Check defeat
+      if (newState.destroyed) {
+        addLog('', 'normal');
+        addLog(t.messages.newGamePrompt, 'info');
+        setAwaitingNewGameConfirmation(true);
       }
 
       // Auto show short range scan after movement (BEFORE Klingon attack)

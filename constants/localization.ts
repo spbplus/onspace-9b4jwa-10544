@@ -331,6 +331,10 @@ export const translations: Record<Language, Translations> = {
       missionAccomplished: '*** MISSION ACCOMPLISHED ***',
       congratulations: 'Congratulations! All Klingons destroyed.',
       timeUsed: (time) => `Time used: ${time} stardates`,
+      newGamePrompt: 'Start new game? (y/n)',
+      newGameYes: 'Starting new game...',
+      newGameNo: 'Thank you for playing!',
+      invalidYesNo: 'Please enter y or n',
       
       usageNav: 'Usage: NAV <course> <warp>',
       usagePha: 'Usage: PHA <energy>',
@@ -494,6 +498,10 @@ export const translations: Record<Language, Translations> = {
       missionAccomplished: '*** МИССИЯ ВЫПОЛНЕНА ***',
       congratulations: 'Поздравляем! Все клингоны уничтожены.',
       timeUsed: (time) => `Использовано времени: ${time} звездных дат`,
+      newGamePrompt: 'Начать новую игру? (y/n)',
+      newGameYes: 'Начинаем новую игру...',
+      newGameNo: 'Спасибо за игру!',
+      invalidYesNo: 'Введите y или n',
       
       usageNav: 'Использование: NAV <курс> <варп>',
       usagePha: 'Использование: PHA <энергия>',
