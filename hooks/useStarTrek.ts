@@ -261,7 +261,6 @@ export function useStarTrek() {
       // Klingon counterattack (AFTER showing map, in RED)
       if (needsKlingonAttack && newState.currentKlingons.length > 0) {
         const attackResult = klingonAttack(newState, t);
-        addLog('', 'error');
         addLogs(attackResult.messages, 'error');
       }
 
