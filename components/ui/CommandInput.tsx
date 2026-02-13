@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   View,
   TextInput,
@@ -18,6 +18,15 @@ interface CommandInputProps {
 
 export function CommandInput({ onSubmit, disabled = false }: CommandInputProps) {
   const [input, setInput] = useState('');
+  const inputRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    // Auto-focus on mount
+    const timer = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = () => {
     if (input.trim() && !disabled) {
@@ -34,6 +43,7 @@ export function CommandInput({ onSubmit, disabled = false }: CommandInputProps) 
       <View style={styles.inputRow}>
         <Text style={styles.prompt}>{'>'}</Text>
         <TextInput
+          ref={inputRef}
           style={styles.input}
           value={input}
           onChangeText={setInput}
@@ -44,6 +54,7 @@ export function CommandInput({ onSubmit, disabled = false }: CommandInputProps) 
           autoCapitalize="characters"
           autoCorrect={false}
           returnKeyType="send"
+          autoFocus={true}
         />
         <Pressable
           style={({ pressed }) => [
