@@ -274,6 +274,9 @@ export function useStarTrek() {
         addLog('', 'normal');
         addLog(t.messages.newGamePrompt, 'info');
         setAwaitingNewGameConfirmation(true);
+        setGameState(newState);
+        saveGameState(newState, logs);
+        return;
       }
       
       // Check defeat
@@ -281,6 +284,9 @@ export function useStarTrek() {
         addLog('', 'normal');
         addLog(t.messages.newGamePrompt, 'info');
         setAwaitingNewGameConfirmation(true);
+        setGameState(newState);
+        saveGameState(newState, logs);
+        return;
       }
 
       // Auto show short range scan after movement (BEFORE Klingon attack)
