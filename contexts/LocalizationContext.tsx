@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState, useCallback, useEffect } from 'react';
+import { createContext, ReactNode, useState, useCallback, useEffect, useMemo } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Language, translations, Translations } from '@/constants/localization';
 
@@ -38,15 +38,20 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const t = translations[language];
+  const t = useMemo(() => translations[language], [language]);
 
   // Don't render children until language is loaded
   if (!isLoaded) {
     return null;
   }
 
+  const value = useMemo(
+    () => ({ language, setLanguage, t }),
+    [language, setLanguage, t]
+  );
+
   return (
-    <LocalizationContext.Provider value={{ language, setLanguage, t }}>
+    <LocalizationContext.Provider value={value}>
       {children}
     </LocalizationContext.Provider>
   );
