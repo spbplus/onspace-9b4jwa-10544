@@ -40,15 +40,15 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
 
   const t = useMemo(() => translations[language], [language]);
 
-  // Don't render children until language is loaded
-  if (!isLoaded) {
-    return null;
-  }
-
   const value = useMemo(
     () => ({ language, setLanguage, t }),
     [language, setLanguage, t]
   );
+
+  // Don't render children until language is loaded
+  if (!isLoaded) {
+    return null;
+  }
 
   return (
     <LocalizationContext.Provider value={value}>
